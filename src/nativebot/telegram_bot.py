@@ -322,6 +322,8 @@ async def cmd_preview(update: Update, context: ContextTypes.DEFAULT_TYPE):
     start_time = time.time()
     timeout = 60
 
+    output_lines = []
+
     def _read_until_ready():
         """Read Expo output until we detect the server is ready. Returns the port."""
         nonlocal metro_port
@@ -331,6 +333,9 @@ async def cmd_preview(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 if process.poll() is not None:
                     break  # Process exited
                 continue
+
+            output_lines.append(line.rstrip())
+            logger.info(f"[expo] {line.rstrip()}")
 
             # Expo outputs: "Waiting on http://localhost:8081"
             port_match = re.search(r'http://localhost:(\d+)', line)
@@ -381,10 +386,22 @@ async def cmd_preview(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         # Kill the process if we couldn't get a URL
         process.terminate()
-        await update.message.reply_text(
-            "❌ Expo failed to start. Check your project for errors.\n\n"
-            "Run manually on your machine:\n"
-            f"<code>cd {_escape(str(project_dir))} && npx expo start</code>",
+
+        # Collect any remaining output
+        try:
+            remaining, _ = process.communicate(timeout=5)
+            if remaining:
+                output_lines.extend(remaining.strip().splitlines())
+        except Exception:
+            pass
+
+        # Send error with the actual Expo output
+        error_output = "\n".join(output_lines[-30:]) if output_lines else "No output captured"
+        await _send_long(
+            update,
+            f"❌ Expo failed to start.\n\n"
+            f"<b>Error output:</b>\n<code>{_escape(error_output)}</code>\n\n"
+            f"Run manually:\n<code>cd {_escape(str(project_dir))} && npx expo start</code>",
             parse_mode=ParseMode.HTML,
         )
 
