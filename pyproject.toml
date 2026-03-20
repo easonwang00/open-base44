@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nativebot"
+version = "1.0.0"
+description = "Open-source AI app builder CLI. Create mobile apps by chatting with AI."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "claude-agent-sdk>=0.1.18",
+    "click>=8.0",
+    "rich>=13.0",
+    "InquirerPy>=0.3.4",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/easonwang00/nativebot"
+Repository = "https://github.com/easonwang00/nativebot"
+"Bug Tracker" = "https://github.com/easonwang00/nativebot/issues"
+
+[project.scripts]
+nativebot = "nativebot.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nativebot"]

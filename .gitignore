@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.venv/
+venv/
+.eggs/
+
+# Environment
+.env
+.env.local
+
+# macOS
+.DS_Store
+
+# Expo / Node (in template during dev)
+node_modules/
+.expo/
+
+# User projects (runtime data)
+projects/
