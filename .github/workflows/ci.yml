@@ -17,4 +17,4 @@ jobs:
       - run: pip install -e .
       - run: python -c "import nativebot; print(f'nativebot {nativebot.__version__} OK')"
       - run: pip install ruff
-      - run: ruff check src/
+      - run: ruff check src/ --exclude src/nativebot/template/
