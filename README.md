@@ -75,6 +75,30 @@ nativebot export MyApp     # Build & submit instructions
 nativebot delete MyApp     # Delete a project
 ```
 
+## Telegram Bot
+
+Build apps from your phone — chat with NativeBot on Telegram.
+
+```bash
+pipx install nativebot[telegram]
+
+# 1. Message @BotFather on Telegram → /newbot → copy token
+# 2. Start the bot
+export TELEGRAM_BOT_TOKEN=your-token
+nativebot telegram
+```
+
+**Commands in Telegram:**
+- `/create MyApp` — Create a new project
+- `/open MyApp` — Switch to a project
+- `/preview` — Get Expo URL to open on your phone
+- `/list` — List all projects
+- `/files` — Show file tree
+- `/model opus` — Switch model
+- Just send a message to chat with Claude!
+
+The bot runs on your machine — same local projects, same `~/.nativebot/projects/` directory.
+
 ## How It Works
 
 1. **Create** — Seeds a production-ready Expo React Native template

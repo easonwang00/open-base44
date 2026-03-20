@@ -185,6 +185,31 @@ def export(name: str):
     )
 
 
+@cli.command()
+@click.option("--token", "-t", default=None, help="Telegram bot token (or set TELEGRAM_BOT_TOKEN)")
+def telegram(token: str):
+    """Start the Telegram bot interface."""
+    bot_token = token or os.environ.get("TELEGRAM_BOT_TOKEN")
+    if not bot_token:
+        console.print("[red]Telegram bot token required.[/red]")
+        console.print()
+        console.print("[bold]Setup:[/bold]")
+        console.print("  1. Message @BotFather on Telegram → /newbot")
+        console.print("  2. Copy the token")
+        console.print("  3. Run: [cyan]export TELEGRAM_BOT_TOKEN=your-token[/cyan]")
+        console.print("     Or: [cyan]nativebot telegram --token your-token[/cyan]")
+        sys.exit(1)
+
+    try:
+        from .telegram_bot import run_telegram_bot
+    except ImportError:
+        console.print("[red]Telegram support not installed.[/red]")
+        console.print("[dim]Install it: pip install nativebot[telegram][/dim]")
+        sys.exit(1)
+
+    run_telegram_bot(bot_token)
+
+
 def interactive_menu():
     """Interactive menu when nativebot is run without arguments."""
     try:
