@@ -132,7 +132,7 @@ async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/list — List all projects\n"
         "/files — Show file tree of active project\n"
         "/preview — Get Expo preview URL/QR for your phone\n"
-        "/model <code>sonnet|opus|haiku</code> — Switch model\n"
+        "/model <code>opus|sonnet</code> — Switch model\n"
         "/close — Close active project\n"
         "/delete <code>AppName</code> — Delete a project\n\n"
         "📷 <b>Photos:</b> Send up to 9 photos, then type a message.\n"
@@ -251,10 +251,10 @@ async def cmd_model(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /model <name> command."""
     if not context.args:
         sessions = _load_sessions()
-        current = sessions.get(f"{update.effective_chat.id}_model", "sonnet")
+        current = sessions.get(f"{update.effective_chat.id}_model", "opus")
         await update.message.reply_text(
             f"Current model: <b>{_escape(current)}</b>\n\n"
-            "Usage: /model <code>sonnet|opus|haiku</code>",
+            "Usage: /model <code>opus|sonnet</code>",
             parse_mode=ParseMode.HTML,
         )
         return
@@ -262,7 +262,7 @@ async def cmd_model(update: Update, context: ContextTypes.DEFAULT_TYPE):
     alias = context.args[0].lower()
     if alias not in MODELS:
         await update.message.reply_text(
-            f"Unknown model '{_escape(alias)}'. Choose: sonnet, opus, haiku",
+            f"Unknown model '{_escape(alias)}'. Choose: opus, sonnet",
             parse_mode=ParseMode.HTML,
         )
         return
@@ -476,7 +476,7 @@ async def _handle_chat_with_photos(
     is_first = len(conversation) == 0
 
     sessions = _load_sessions()
-    model_alias = sessions.get(f"{update.effective_chat.id}_model", "sonnet")
+    model_alias = sessions.get(f"{update.effective_chat.id}_model", "opus")
     model = MODELS.get(model_alias, DEFAULT_MODEL)
 
     if is_first:
@@ -633,7 +633,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Get model
     sessions = _load_sessions()
-    model_alias = sessions.get(f"{update.effective_chat.id}_model", "sonnet")
+    model_alias = sessions.get(f"{update.effective_chat.id}_model", "opus")
     model = MODELS.get(model_alias, DEFAULT_MODEL)
 
     # Build prompt

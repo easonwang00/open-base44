@@ -215,11 +215,10 @@ Projects are stored in `~/.nativebot/projects/`. To change:
 export NATIVEBOT_PROJECTS_DIR=/path/to/projects
 ```
 
-Default model is Claude Sonnet 4.6. To change:
+Default model is Claude Opus 4.6. To change:
 
 ```bash
-nativebot open MyApp --model opus    # Use Opus 4.6
-nativebot open MyApp --model haiku   # Use Haiku 4.5
+nativebot open MyApp --model sonnet  # Use Sonnet 4.6 (faster)
 ```
 
 ## Contributing

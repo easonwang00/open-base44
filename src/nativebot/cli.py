@@ -270,16 +270,12 @@ def interactive_menu():
                         message="Choose model:",
                         choices=[
                             {
-                                "name": "Sonnet 4.6 (recommended)",
-                                "value": "claude-sonnet-4-6",
-                            },
-                            {
-                                "name": "Opus 4.6 (most capable)",
+                                "name": "Opus 4.6 (recommended)",
                                 "value": "claude-opus-4-6",
                             },
                             {
-                                "name": "Haiku 4.5 (fastest)",
-                                "value": "claude-haiku-4-5-20251001",
+                                "name": "Sonnet 4.6 (faster)",
+                                "value": "claude-sonnet-4-6",
                             },
                         ],
                     ).execute()
@@ -308,16 +304,12 @@ def interactive_menu():
                 message="Choose model:",
                 choices=[
                     {
-                        "name": "Sonnet 4.6 (recommended)",
-                        "value": "claude-sonnet-4-6",
-                    },
-                    {
-                        "name": "Opus 4.6 (most capable)",
+                        "name": "Opus 4.6 (recommended)",
                         "value": "claude-opus-4-6",
                     },
                     {
-                        "name": "Haiku 4.5 (fastest)",
-                        "value": "claude-haiku-4-5-20251001",
+                        "name": "Sonnet 4.6 (faster)",
+                        "value": "claude-sonnet-4-6",
                     },
                 ],
             ).execute()

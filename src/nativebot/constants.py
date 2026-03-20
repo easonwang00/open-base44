@@ -9,11 +9,10 @@ import os
 MODELS = {
     "sonnet": "claude-sonnet-4-6",
     "opus": "claude-opus-4-6",
-    "haiku": "claude-haiku-4-5-20251001",
 }
 
 # Default model (can be overridden via env)
-DEFAULT_MODEL = os.getenv("NATIVEBOT_MODEL", "claude-sonnet-4-6")
+DEFAULT_MODEL = os.getenv("NATIVEBOT_MODEL", "claude-opus-4-6")
 
 # Tools for Claude Agent SDK
 ALLOWED_TOOLS = [
