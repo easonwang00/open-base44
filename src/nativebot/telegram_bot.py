@@ -8,7 +8,6 @@ import asyncio
 import html
 import json
 import logging
-import os
 import re
 import subprocess
 import time
@@ -35,7 +34,6 @@ from .projects import (
     get_project_files,
     list_projects,
     get_conversation,
-    get_metadata,
     save_conversation,
 )
 
