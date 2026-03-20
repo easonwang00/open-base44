@@ -14,9 +14,6 @@ import time
 from pathlib import Path
 from typing import Optional
 
-IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".svg"}
-MAX_PHOTOS = 9
-
 from .agent import run_generation, extract_session_id, extract_result_text, extract_metadata
 from .constants import DEFAULT_MODEL, SYSTEM_RULES
 from .display import console, print_error
@@ -26,6 +23,9 @@ from .projects import (
     get_project_files,
     save_conversation,
 )
+
+IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".svg"}
+MAX_PHOTOS = 9
 
 
 def save_photos_to_project(project_dir: Path, photo_paths: list[str]) -> list[Path]:
