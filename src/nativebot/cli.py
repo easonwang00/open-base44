@@ -200,12 +200,7 @@ def telegram(token: str):
         console.print("     Or: [cyan]nativebot telegram --token your-token[/cyan]")
         sys.exit(1)
 
-    try:
-        from .telegram_bot import run_telegram_bot
-    except ImportError:
-        console.print("[red]Telegram support not installed.[/red]")
-        console.print("[dim]Install it: pip install nativebot[telegram][/dim]")
-        sys.exit(1)
+    from .telegram_bot import run_telegram_bot
 
     run_telegram_bot(bot_token)
 

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nativebot"
-version = "1.1.0"
+version = "1.2.0"
 description = "Open-source AI app builder CLI. Create mobile apps by chatting with AI."
 readme = "README.md"
 license = "MIT"
@@ -15,10 +15,8 @@ dependencies = [
     "rich>=13.0",
     "InquirerPy>=0.3.4",
     "python-dotenv>=1.0.0",
+    "python-telegram-bot>=21.0",
 ]
-
-[project.optional-dependencies]
-telegram = ["python-telegram-bot>=21.0"]
 
 [project.urls]
 Homepage = "https://github.com/easonwang00/nativebot"

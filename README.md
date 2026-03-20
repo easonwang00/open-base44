@@ -19,7 +19,7 @@ Describe your app → Claude builds it → Preview on your phone → Submit to A
 ## Quick Start
 
 ```bash
-pipx install "nativebot[telegram]"   # or: pip install "nativebot[telegram]"
+pipx install nativebot   # or: pip install nativebot
 claude login
 nativebot
 ```
@@ -79,25 +79,32 @@ nativebot delete MyApp     # Delete a project
 
 Build apps from your phone — chat with NativeBot on Telegram.
 
-```bash
-pipx install "nativebot[telegram]"
+NativeBot includes a self-hosted Telegram bot. You create your own private bot on Telegram and run it on your machine. It's not a public bot — it's **your** bot, connected to **your** projects.
 
-# 1. Message @BotFather on Telegram → /newbot → copy token
-# 2. Start the bot
+**Setup (1 minute):**
+
+```bash
+# 1. Create your bot on Telegram:
+#    Open Telegram → search @BotFather → send /newbot
+#    Pick a name and username → BotFather gives you a token
+
+# 2. Start the bot on your machine:
 export TELEGRAM_BOT_TOKEN=your-token
 nativebot telegram
 ```
 
+Now open Telegram and message your bot. That's it.
+
 **Commands in Telegram:**
 - `/create MyApp` — Create a new project
 - `/open MyApp` — Switch to a project
-- `/preview` — Get Expo URL to open on your phone
+- `/preview` — Get Expo URL to open on your phone (chat keeps working)
 - `/list` — List all projects
 - `/files` — Show file tree
 - `/model opus` — Switch model
-- Just send a message to chat with Claude!
+- Just send any message to chat with Claude!
 
-The bot runs on your machine — same local projects, same `~/.nativebot/projects/` directory.
+The bot runs on your machine — same local projects, same `~/.nativebot/projects/` directory. You can use the CLI and Telegram interchangeably on the same projects.
 
 ## How It Works
 
