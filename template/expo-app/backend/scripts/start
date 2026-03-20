@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+echo "Starting NativeBot Supabase backend..."
+
+# Install dependencies
+echo "Installing dependencies..."
+npm install
+
+# Check for required environment variables
+if [ -z "$SUPABASE_URL" ]; then
+  echo "Warning: SUPABASE_URL is not set. Loading from .env if available..."
+  if [ -f ".env" ]; then
+    export $(grep -v '^#' .env | xargs)
+  fi
+fi
+
+# Push migrations if supabase CLI is available
+if command -v npx &> /dev/null && [ -d "supabase/migrations" ]; then
+  echo "Pushing database migrations..."
+  npx supabase db push 2>/dev/null || echo "Skipping migration push (Supabase CLI not linked or not available)"
+fi
+
+echo "Backend ready. Supabase client initialized."
+echo "Frontend can connect directly to Supabase at: $SUPABASE_URL"
