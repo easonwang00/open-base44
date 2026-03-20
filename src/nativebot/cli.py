@@ -126,14 +126,14 @@ def _run_preview(project_dir: Path, project_name: str, web: bool = False):
         console.print("[dim]Your app will open in the browser.[/dim]")
         console.print()
         os.chdir(project_dir)
-        os.execvp("npx", ["npx", "expo", "start", "--web", "--clear"])
+        os.execvp("npx", ["npx", "expo", "start", "--web", "--clear", "--port", "0"])
     else:
         console.print("[bold cyan]Starting Expo Go preview...[/bold cyan]")
         console.print("[dim]Scan the QR code with Expo Go on your phone.[/dim]")
         console.print("[dim]iOS: Camera app → scan QR. Android: Expo Go app → scan QR.[/dim]")
         console.print()
         os.chdir(project_dir)
-        os.execvp("npx", ["npx", "expo", "start", "--clear"])
+        os.execvp("npx", ["npx", "expo", "start", "--clear", "--port", "0"])
 
 
 @cli.command()

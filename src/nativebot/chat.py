@@ -280,7 +280,7 @@ def _setup_env(project_dir: Path):
 
 def _launch_preview_background(project_dir: Path, web: bool = False):
     """Launch Expo preview in a new terminal window."""
-    expo_cmd = "npx expo start --clear" + (" --web" if web else "")
+    expo_cmd = "npx expo start --clear --port 0" + (" --web" if web else "")
     full_cmd = f"cd {project_dir} && npm install && {expo_cmd}"
 
     system = platform.system()

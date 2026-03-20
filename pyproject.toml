@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nativebot"
-version = "1.2.2"
+version = "1.2.3"
 description = "Open-source AI app builder CLI. Create mobile apps by chatting with AI."
 readme = "README.md"
 license = "MIT"

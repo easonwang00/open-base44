@@ -309,7 +309,7 @@ async def cmd_preview(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Start expo in background
     process = subprocess.Popen(
-        ["npx", "expo", "start", "--clear"],
+        ["npx", "expo", "start", "--clear", "--port", "0"],
         cwd=project_dir,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
