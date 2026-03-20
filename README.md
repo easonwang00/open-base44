@@ -19,7 +19,7 @@ Describe your app → Claude builds it → Preview on your phone → Submit to A
 ## Quick Start
 
 ```bash
-pip install nativebot
+pipx install nativebot   # or: pip install nativebot
 claude login
 nativebot
 ```
