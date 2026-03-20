@@ -26,7 +26,7 @@ from telegram.ext import (
 )
 
 from .agent import run_generation, extract_session_id, extract_result_text, extract_metadata
-from .chat import build_first_prompt, build_followup_prompt, _parse_activity_from_block, MAX_PHOTOS
+from .chat import build_first_prompt, build_followup_prompt, _parse_activity_from_block, MAX_PHOTOS, self_heal_after_generation
 from .constants import DEFAULT_MODEL, MODELS
 from .projects import (
     create_project,
@@ -539,7 +539,26 @@ async def _handle_chat_with_photos(
         save_conversation(project_dir, conversation)
         return
 
-    subprocess.run(["npm", "install"], cwd=project_dir, capture_output=True, text=True)
+    # Self-heal: npm install + build verify + auto-fix
+    async def _tg_status(text: str):
+        try:
+            elapsed = int(time.time() - start_time)
+            await status_msg.edit_text(
+                f"🤖 <b>{_escape(project_name)}</b> — {elapsed}s\n{_escape(text)}",
+                parse_mode=ParseMode.HTML,
+            )
+        except Exception:
+            pass
+
+    new_sid = await self_heal_after_generation(
+        project_dir=project_dir,
+        model=model,
+        session_id=session_id,
+        all_messages=all_messages,
+        on_status=_tg_status,
+    )
+    if new_sid:
+        session_id = new_sid
 
     duration = time.time() - start_time
     result_text = extract_result_text(all_messages)
@@ -681,13 +700,26 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         save_conversation(project_dir, conversation)
         return
 
-    # Run npm install
-    subprocess.run(
-        ["npm", "install"],
-        cwd=project_dir,
-        capture_output=True,
-        text=True,
+    # Self-heal: npm install + build verify + auto-fix
+    async def _tg_status(text: str):
+        try:
+            elapsed = int(time.time() - start_time)
+            await status_msg.edit_text(
+                f"🤖 <b>{_escape(project_name)}</b> — {elapsed}s\n{_escape(text)}",
+                parse_mode=ParseMode.HTML,
+            )
+        except Exception:
+            pass
+
+    new_sid = await self_heal_after_generation(
+        project_dir=project_dir,
+        model=model,
+        session_id=session_id,
+        all_messages=all_messages,
+        on_status=_tg_status,
     )
+    if new_sid:
+        session_id = new_sid
 
     duration = time.time() - start_time
     result_text = extract_result_text(all_messages)

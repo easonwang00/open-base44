@@ -28,6 +28,102 @@ IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".svg"}
 MAX_PHOTOS = 9
 
 
+async def self_heal_after_generation(
+    project_dir: Path,
+    model: str,
+    session_id: Optional[str],
+    all_messages: list[dict],
+    on_status: Optional[callable] = None,
+) -> Optional[str]:
+    """Run npm install + build verify with self-healing. Returns updated session_id."""
+
+    async def _update(text: str):
+        if on_status:
+            await on_status(text)
+
+    # 1. npm install
+    await _update("Installing dependencies...")
+    install_result = subprocess.run(
+        ["npm", "install"], cwd=project_dir, capture_output=True, text=True,
+    )
+
+    # Self-heal npm install failure
+    if install_result.returncode != 0:
+        npm_error = (install_result.stderr or install_result.stdout or "")[-1500:]
+        fix_prompt = f"""IMPORTANT: You are working inside: {project_dir}
+ALL file operations MUST stay within this directory.
+
+`npm install` failed with this error:
+
+{npm_error}
+
+Fix the issue. Common fixes:
+- If a package is missing or incompatible, update package.json with correct versions
+- If there are peer dependency conflicts, adjust versions to be compatible
+- Do NOT use --legacy-peer-deps or --force
+- After fixing, run: npm install
+"""
+        await _update("Fixing dependency issues...")
+        try:
+            async for msg in run_generation(
+                prompt=fix_prompt, project_dir=project_dir,
+                model=model, session_id=session_id,
+            ):
+                all_messages.append(msg)
+                if msg.get("subtype") == "success":
+                    new_sid = msg.get("session_id")
+                    if new_sid:
+                        session_id = new_sid
+        except Exception:
+            pass
+
+    # 2. Verify build
+    await _update("Verifying build...")
+    try:
+        verify_result = subprocess.run(
+            ["npx", "expo", "export", "--dump-sourcemap", "--output-dir", "/tmp/nativebot-verify-build"],
+            cwd=project_dir, capture_output=True, text=True, timeout=120,
+        )
+        shutil.rmtree("/tmp/nativebot-verify-build", ignore_errors=True)
+    except Exception:
+        return session_id
+
+    # Self-heal build failure
+    if verify_result.returncode != 0:
+        build_error = (verify_result.stderr or verify_result.stdout or "")[-2000:]
+        fix_prompt = f"""IMPORTANT: You are working inside: {project_dir}
+ALL file operations MUST stay within this directory.
+
+The app failed to build. Here is the error from `npx expo export`:
+
+{build_error}
+
+Fix the issue. Common fixes:
+- Missing module: install it with `npm install <package>` or fix the import
+- TypeScript error: fix the type issue in the source file
+- Babel/Metro config error: fix babel.config.js or metro.config.js
+- Cannot resolve: check the import path is correct
+
+After fixing, run: npm install
+Do NOT run expo start or expo export yourself.
+"""
+        await _update("Fixing build errors...")
+        try:
+            async for msg in run_generation(
+                prompt=fix_prompt, project_dir=project_dir,
+                model=model, session_id=session_id,
+            ):
+                all_messages.append(msg)
+                if msg.get("subtype") == "success":
+                    new_sid = msg.get("session_id")
+                    if new_sid:
+                        session_id = new_sid
+        except Exception:
+            pass
+
+    return session_id
+
+
 def save_photos_to_project(project_dir: Path, photo_paths: list[str]) -> list[Path]:
     """Copy photos into the project's .nativebot/uploads/ directory.
 
@@ -582,96 +678,19 @@ async def chat_session(project_dir: Path, model: str = DEFAULT_MODEL):
             save_conversation(project_dir, conversation)
             continue
 
-        # Install dependencies after generation
-        with console.status("[bold cyan]Installing dependencies...[/bold cyan]"):
-            install_result = subprocess.run(
-                ["npm", "install"],
-                cwd=project_dir,
-                capture_output=True,
-                text=True,
-            )
+        # Self-heal: npm install + build verify + auto-fix
+        async def _cli_status(text: str):
+            console.print(f"[bold cyan]{text}[/bold cyan]")
 
-        # Self-heal: if npm install failed, ask NativeBot to fix it
-        if install_result.returncode != 0:
-            npm_error = (install_result.stderr or install_result.stdout or "")[-1500:]
-            fix_prompt = f"""IMPORTANT: You are working inside: {project_dir}
-ALL file operations MUST stay within this directory.
-
-`npm install` failed with this error:
-
-{npm_error}
-
-Fix the issue. Common fixes:
-- If a package is missing or incompatible, update package.json with correct versions
-- If there are peer dependency conflicts, adjust versions to be compatible
-- Do NOT use --legacy-peer-deps or --force
-- After fixing, run: npm install
-"""
-            console.print("[yellow]Fixing dependency issues...[/yellow]")
-            try:
-                with console.status("[bold magenta]NativeBot is fixing dependencies...[/bold magenta]"):
-                    async for msg in run_generation(
-                        prompt=fix_prompt,
-                        project_dir=project_dir,
-                        model=model,
-                        session_id=session_id,
-                    ):
-                        all_messages.append(msg)
-                        if msg.get("subtype") == "success":
-                            new_sid = msg.get("session_id")
-                            if new_sid:
-                                session_id = new_sid
-            except Exception:
-                pass
-
-        # Verify build: run expo export check (typecheck without actually starting)
-        with console.status("[bold cyan]Verifying build...[/bold cyan]"):
-            verify_result = subprocess.run(
-                ["npx", "expo", "export", "--dump-sourcemap", "--output-dir", "/tmp/nativebot-verify-build"],
-                cwd=project_dir,
-                capture_output=True,
-                text=True,
-                timeout=120,
-            )
-            # Clean up temp build
-            import shutil as _shutil
-            _shutil.rmtree("/tmp/nativebot-verify-build", ignore_errors=True)
-
-        # Self-heal: if build verification failed, ask NativeBot to fix it
-        if verify_result.returncode != 0:
-            build_error = (verify_result.stderr or verify_result.stdout or "")[-2000:]
-            fix_prompt = f"""IMPORTANT: You are working inside: {project_dir}
-ALL file operations MUST stay within this directory.
-
-The app failed to build. Here is the error from `npx expo export`:
-
-{build_error}
-
-Fix the issue. Common fixes:
-- Missing module: install it with `npm install <package>` or fix the import
-- TypeScript error: fix the type issue in the source file
-- Babel/Metro config error: fix babel.config.js or metro.config.js
-- Cannot resolve: check the import path is correct
-
-After fixing, run: npm install
-Do NOT run expo start or expo export yourself.
-"""
-            console.print("[yellow]Fixing build errors...[/yellow]")
-            try:
-                with console.status("[bold magenta]NativeBot is fixing build errors...[/bold magenta]"):
-                    async for msg in run_generation(
-                        prompt=fix_prompt,
-                        project_dir=project_dir,
-                        model=model,
-                        session_id=session_id,
-                    ):
-                        all_messages.append(msg)
-                        if msg.get("subtype") == "success":
-                            new_sid = msg.get("session_id")
-                            if new_sid:
-                                session_id = new_sid
-            except Exception:
-                pass
+        new_sid = await self_heal_after_generation(
+            project_dir=project_dir,
+            model=model,
+            session_id=session_id,
+            all_messages=all_messages,
+            on_status=_cli_status,
+        )
+        if new_sid:
+            session_id = new_sid
 
         duration = time.time() - start_time
 
