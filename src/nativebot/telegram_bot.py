@@ -31,6 +31,7 @@ from .constants import DEFAULT_MODEL, MODELS
 from .projects import (
     create_project,
     delete_project,
+    get_mobile_dir,
     get_project,
     get_project_files,
     list_projects,
@@ -317,9 +318,10 @@ async def cmd_preview(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     # Install deps first
+    mobile_dir = get_mobile_dir(project_dir)
     install = await asyncio.get_event_loop().run_in_executor(
         None,
-        lambda: subprocess.run(["npm", "install"], cwd=project_dir, capture_output=True, text=True),
+        lambda: subprocess.run(["npm", "install"], cwd=mobile_dir, capture_output=True, text=True),
     )
     if install.returncode != 0:
         await update.message.reply_text("❌ npm install failed. Check your project for errors.")
@@ -328,7 +330,7 @@ async def cmd_preview(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Start expo in background
     process = subprocess.Popen(
         ["npx", "expo", "start", "--clear", "--port", "0"],
-        cwd=project_dir,
+        cwd=mobile_dir,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,

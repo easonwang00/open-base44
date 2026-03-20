@@ -17,6 +17,7 @@ from .display import console, print_banner, print_file_tree, print_project_list
 from .projects import (
     create_project,
     delete_project,
+    get_mobile_dir,
     get_project,
     get_project_files,
     list_projects,
@@ -97,8 +98,10 @@ def _run_preview(project_dir: Path, project_name: str, web: bool = False):
     """Install deps and launch Expo preview."""
     import subprocess
 
+    mobile_dir = get_mobile_dir(project_dir)
+
     console.print(f"[bold]Previewing:[/bold] {project_name}")
-    console.print(f"[dim]{project_dir}[/dim]")
+    console.print(f"[dim]{mobile_dir}[/dim]")
     console.print()
 
     # Always reinstall dependencies to ensure they're fresh and up to date
@@ -106,7 +109,7 @@ def _run_preview(project_dir: Path, project_name: str, web: bool = False):
     console.print()
     result = subprocess.run(
         ["npm", "install"],
-        cwd=project_dir,
+        cwd=mobile_dir,
         capture_output=False,
     )
     if result.returncode != 0:
@@ -114,7 +117,7 @@ def _run_preview(project_dir: Path, project_name: str, web: bool = False):
         return
 
     # Clear Metro cache to avoid stale bundles
-    expo_dir = project_dir / ".expo"
+    expo_dir = mobile_dir / ".expo"
     if expo_dir.exists():
         import shutil
         shutil.rmtree(expo_dir, ignore_errors=True)
@@ -125,14 +128,14 @@ def _run_preview(project_dir: Path, project_name: str, web: bool = False):
         console.print("[bold cyan]Starting web preview...[/bold cyan]")
         console.print("[dim]Your app will open in the browser.[/dim]")
         console.print()
-        os.chdir(project_dir)
+        os.chdir(mobile_dir)
         os.execvp("npx", ["npx", "expo", "start", "--web", "--clear", "--port", "0"])
     else:
         console.print("[bold cyan]Starting Expo Go preview...[/bold cyan]")
         console.print("[dim]Scan the QR code with Expo Go on your phone.[/dim]")
         console.print("[dim]iOS: Camera app → scan QR. Android: Expo Go app → scan QR.[/dim]")
         console.print()
-        os.chdir(project_dir)
+        os.chdir(mobile_dir)
         os.execvp("npx", ["npx", "expo", "start", "--clear", "--port", "0"])
 
 

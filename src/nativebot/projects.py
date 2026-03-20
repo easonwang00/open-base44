@@ -15,6 +15,18 @@ from typing import Optional
 
 from .constants import SKIP_DIRS
 
+
+def get_mobile_dir(project_dir: Path) -> Path:
+    """Get the mobile app directory for npm/expo commands.
+
+    Returns project_dir/mobile/ if it exists (new template),
+    otherwise project_dir itself (old flat template).
+    """
+    mobile = Path(project_dir) / "mobile"
+    if mobile.is_dir():
+        return mobile
+    return Path(project_dir)
+
 # Base directory for all projects
 # Uses NATIVEBOT_PROJECTS_DIR env var, or ~/.nativebot/projects/
 PROJECTS_BASE = Path(os.environ.get("NATIVEBOT_PROJECTS_DIR", str(Path.home() / ".nativebot" / "projects")))

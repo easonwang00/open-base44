@@ -20,6 +20,7 @@ from .display import console, print_error
 from .projects import (
     get_conversation,
     get_metadata,
+    get_mobile_dir,
     get_project_files,
     save_conversation,
 )
@@ -36,6 +37,7 @@ async def self_heal_after_generation(
     on_status: Optional[callable] = None,
 ) -> Optional[str]:
     """Run npm install + build verify with self-healing. Returns updated session_id."""
+    mobile_dir = get_mobile_dir(project_dir)
 
     async def _update(text: str):
         if on_status:
@@ -44,7 +46,7 @@ async def self_heal_after_generation(
     # 1. npm install
     await _update("Installing dependencies...")
     install_result = subprocess.run(
-        ["npm", "install"], cwd=project_dir, capture_output=True, text=True,
+        ["npm", "install"], cwd=mobile_dir, capture_output=True, text=True,
     )
 
     # Self-heal npm install failure
@@ -82,7 +84,7 @@ Fix the issue. Common fixes:
     try:
         verify_result = subprocess.run(
             ["npx", "expo", "export", "--dump-sourcemap", "--output-dir", "/tmp/nativebot-verify-build"],
-            cwd=project_dir, capture_output=True, text=True, timeout=120,
+            cwd=mobile_dir, capture_output=True, text=True, timeout=120,
         )
         shutil.rmtree("/tmp/nativebot-verify-build", ignore_errors=True)
     except Exception:
@@ -419,8 +421,9 @@ def _setup_env(project_dir: Path):
 
 def _launch_preview_background(project_dir: Path, web: bool = False):
     """Launch Expo preview in a new terminal window."""
+    mobile_dir = get_mobile_dir(project_dir)
     expo_cmd = "npx expo start --clear --port 0" + (" --web" if web else "")
-    full_cmd = f"cd {project_dir} && npm install && {expo_cmd}"
+    full_cmd = f"cd {mobile_dir} && npm install && {expo_cmd}"
 
     system = platform.system()
     if system == "Darwin":
