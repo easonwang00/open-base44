@@ -1,0 +1,22 @@
+{
+  "name": "nativebot-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "./scripts/start",
+    "db:push": "npx supabase db push",
+    "db:reset": "npx supabase db reset",
+    "migration:new": "npx supabase migration new",
+    "functions:serve": "npx supabase functions serve",
+    "functions:deploy": "npx supabase functions deploy"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2",
+    "zod": "^3.23"
+  },
+  "devDependencies": {
+    "supabase": "^1",
+    "typescript": "^5.8"
+  }
+}
