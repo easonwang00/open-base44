@@ -19,15 +19,14 @@ from .constants import SKIP_DIRS
 # Uses NATIVEBOT_PROJECTS_DIR env var, or ~/.nativebot/projects/
 PROJECTS_BASE = Path(os.environ.get("NATIVEBOT_PROJECTS_DIR", str(Path.home() / ".nativebot" / "projects")))
 
-# Template directory -- look relative to the package, then fall back
+# Template directory -- look inside the package first (pip/pipx install),
+# then fall back to repo root (development mode)
 _PACKAGE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _PACKAGE_DIR.parent.parent  # src/nativebot -> src -> repo root
 
-# Try multiple locations for the template
 _TEMPLATE_CANDIDATES = [
-    _REPO_ROOT / "template" / "expo-app",
-    _REPO_ROOT / "template",
-    _PACKAGE_DIR / "template",
+    _PACKAGE_DIR / "template",              # Inside installed package
+    _REPO_ROOT / "template" / "expo-app",   # Development: repo root
 ]
 
 TEMPLATE_DIR: Optional[Path] = None
@@ -79,29 +78,31 @@ def create_project(name: str, description: str = "") -> Path:
     else:
         project_dir.mkdir(parents=True)
 
-    # Update app.json with the app name
-    app_json_path = project_dir / "app.json"
-    if app_json_path.exists():
-        try:
-            app_config = json.loads(app_json_path.read_text())
-            expo = app_config.get("expo", {})
-            expo["name"] = name.strip()
-            expo["slug"] = slug
-            expo["scheme"] = slug
-            app_config["expo"] = expo
-            app_json_path.write_text(json.dumps(app_config, indent=2))
-        except Exception:
-            pass
+    # Update app.json with the app name (check both root and mobile/)
+    for app_json_rel in ["app.json", "mobile/app.json"]:
+        app_json_path = project_dir / app_json_rel
+        if app_json_path.exists():
+            try:
+                app_config = json.loads(app_json_path.read_text())
+                expo = app_config.get("expo", {})
+                expo["name"] = name.strip()
+                expo["slug"] = slug
+                expo["scheme"] = slug
+                app_config["expo"] = expo
+                app_json_path.write_text(json.dumps(app_config, indent=2))
+            except Exception:
+                pass
 
-    # Update package.json name
-    pkg_json_path = project_dir / "package.json"
-    if pkg_json_path.exists():
-        try:
-            pkg = json.loads(pkg_json_path.read_text())
-            pkg["name"] = slug
-            pkg_json_path.write_text(json.dumps(pkg, indent=2))
-        except Exception:
-            pass
+    # Update package.json name (check both root and mobile/)
+    for pkg_json_rel in ["package.json", "mobile/package.json"]:
+        pkg_json_path = project_dir / pkg_json_rel
+        if pkg_json_path.exists():
+            try:
+                pkg = json.loads(pkg_json_path.read_text())
+                pkg["name"] = slug
+                pkg_json_path.write_text(json.dumps(pkg, indent=2))
+            except Exception:
+                pass
 
     # Create .nativebot metadata directory
     meta_dir = project_dir / ".nativebot"
