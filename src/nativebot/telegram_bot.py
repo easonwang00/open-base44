@@ -26,7 +26,7 @@ from telegram.ext import (
 )
 
 from .agent import run_generation, extract_session_id, extract_result_text, extract_metadata
-from .chat import build_first_prompt, build_followup_prompt, _parse_activity_from_block, save_photos_to_project, MAX_PHOTOS
+from .chat import build_first_prompt, build_followup_prompt, _parse_activity_from_block, MAX_PHOTOS
 from .constants import DEFAULT_MODEL, MODELS
 from .projects import (
     create_project,
