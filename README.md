@@ -12,7 +12,7 @@ Describe your app → Claude builds it → Preview on your phone → Submit to A
 [![PyPI](https://img.shields.io/pypi/v/nativebot)](https://pypi.org/project/nativebot)
 [![GitHub Stars](https://img.shields.io/github/stars/easonwang00/nativebot?style=social)](https://github.com/easonwang00/nativebot)
 
-https://github.com/user-attachments/assets/59f0cdcc-6271-4b69-b7d7-2760719119fb
+<video src="https://github.com/user-attachments/assets/59f0cdcc-6271-4b69-b7d7-2760719119fb" width="600" autoplay loop muted playsinline></video>
 
 </div>
 
