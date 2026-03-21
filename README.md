@@ -4,9 +4,11 @@
 
 # NativeBot
 
-**Build and ship mobile apps from your terminal. Powered by AI.**
+**Your open-source personal app developer. Runs on your machine. Builds real apps.**
 
-Describe your app → Claude builds it → Preview on your phone → Submit to App Store.
+Describe what you want → Claude writes the code → Preview on your phone → Ship to App Store.
+
+No cloud. No account. No limits. Your code stays on your machine.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/nativebot)](https://pypi.org/project/nativebot)
@@ -18,7 +20,13 @@ https://github.com/user-attachments/assets/bc99413e-586e-456d-883e-7d5fdced799b
 
 ---
 
-## Quick Start
+Most AI app builders give you throwaway demos. NativeBot gives you **real, shippable mobile apps** — built with Expo React Native, running on your phone, ready for the App Store. Not mockups. Not prototypes. Production code.
+
+It's your **personal app developer** that lives in your terminal. It doesn't phone home. It doesn't store your code in someone else's cloud. Everything runs locally, powered by your Claude subscription. You own every line.
+
+---
+
+## Quick Start — 30 seconds
 
 ```bash
 pipx install nativebot   # or: pip install nativebot
@@ -26,202 +34,151 @@ claude login
 nativebot
 ```
 
-That's it. Three commands. No API key setup. Uses your Claude subscription.
+Three commands. No API key setup. Uses your Claude subscription. Start building.
 
 ---
 
-## Demo
+## See It Work — 1 min read
 
 ```
 $ nativebot
 
-  🚀 NativeBot — AI App Builder
-
   ? What would you like to do? Create new project
-  ? Project name: FitnessApp
-  ? Describe your app: A fitness tracker with workout logging
+  ? App name: FitnessApp
   ? Start building now? Yes
-  ? Choose model: Sonnet 4.6 (recommended)
 
-  🤖 Claude is working...
-  ├─ Reading package.json
-  ├─ Writing app/screens/WorkoutScreen.tsx
-  ├─ Writing app/components/ExerciseCard.tsx
-  ├─ bash → npm install react-native-chart-kit
-  ├─ Writing app/screens/ProgressScreen.tsx
-  └─ bash → npx expo export -p web
+  You: Build a fitness tracker with workout logging and progress charts
 
-  ✅ Done! 8 files changed in 32s
+  🤖 Claude is working... 32s
+  ├─ Writing src/app/index.tsx
+  ├─ Writing src/app/workouts.tsx
+  ├─ Writing src/components/ExerciseCard.tsx
+  ├─ Writing src/components/ProgressChart.tsx
+  └─ npm install
 
-  You: Add a dark mode toggle to the settings page
+  ✅ Done! 8 files changed (5 turns, saved $0.23)
 
-  🤖 Claude is working...
-  ├─ Reading app/screens/SettingsScreen.tsx
-  ├─ Writing app/context/ThemeContext.tsx
-  ├─ Edit app/screens/SettingsScreen.tsx
-  └─ Edit app/_layout.tsx
+  You: Add a dark mode toggle to settings
 
-  ✅ Done! 3 files changed in 18s
+  🤖 Claude is working... 18s
+  ├─ Writing src/app/settings.tsx
+  ├─ Edit src/app/_layout.tsx
+  └─ npm install
+
+  ✅ Done! 3 files changed (3 turns, saved $0.12)
+
+  You: preview
+  Preview is already running!
+  Expo hot-reloads automatically when code changes. Check your phone.
 ```
 
-## Commands
+That's a working app on your phone in under 2 minutes.
+
+## Commands — 30 sec read
 
 ```bash
 nativebot                  # Interactive mode (recommended)
 nativebot create "MyApp"   # Create a new project
+nativebot open MyApp       # Chat with Claude about your app
+nativebot preview MyApp    # Launch Expo preview on your phone
 nativebot list             # List all projects
-nativebot open MyApp       # Open project and chat with Claude
-nativebot preview MyApp    # Launch Expo dev server
 nativebot files MyApp      # Show project file tree
-nativebot export MyApp     # Build & submit instructions
+nativebot export MyApp     # Build & submit to App Store
+nativebot telegram         # Start Telegram bot interface
 nativebot delete MyApp     # Delete a project
 ```
 
-## Telegram Bot
+## Chat From Your Phone — 1 min read
 
-Build apps from your phone — chat with NativeBot on Telegram.
-
-NativeBot includes a self-hosted Telegram bot. You create your own private bot on Telegram and run it on your machine. It's not a public bot — it's **your** bot, connected to **your** projects.
-
-**Setup (1 minute):**
+NativeBot includes a self-hosted Telegram bot. Create your own private bot, run it on your machine. Build apps from your phone while you're on the couch.
 
 ```bash
-# 1. Create your bot on Telegram:
-#    Open Telegram → search @BotFather → send /newbot
-#    Pick a name and username → BotFather gives you a token
-
-# 2. Start the bot on your machine:
+# 1. Open Telegram → @BotFather → /newbot → copy token
+# 2. Start the bot:
 export TELEGRAM_BOT_TOKEN=your-token
 nativebot telegram
 ```
 
-Now open Telegram and message your bot. That's it.
+Send photos of UI designs. Claude sees them. `/preview` gives you the Expo URL right in Telegram — open it in Expo Go, keep chatting while you preview. The chat doesn't interrupt.
 
-**Commands in Telegram:**
-- `/create MyApp` — Create a new project
-- `/open MyApp` — Switch to a project
-- `/preview` — Get Expo URL to open on your phone (chat keeps working)
-- `/list` — List all projects
-- `/files` — Show file tree
-- `/model opus` — Switch model
-- Just send any message to chat with Claude!
+Same projects, same `~/.nativebot/projects/` directory. CLI and Telegram work interchangeably.
 
-The bot runs on your machine — same local projects, same `~/.nativebot/projects/` directory. You can use the CLI and Telegram interchangeably on the same projects.
-
-## How It Works
+## How It Works — 30 sec read
 
 1. **Create** — Seeds a production-ready Expo React Native template
 2. **Chat** — Describe features in plain English, Claude writes the code
-3. **Preview** — Run `nativebot preview MyApp` → scan QR with Expo Go on your phone
-4. **Iterate** — Keep chatting to add features, fix bugs, refine UI
+3. **Self-heal** — If the build breaks, Claude auto-detects and fixes it
+4. **Preview** — Scan QR with Expo Go on your phone, hot-reloads on every change
 5. **Ship** — Build with EAS and submit to App Store / Google Play
 
-## Preview Your App
+## Why NativeBot? — 30 sec read
+
+| | Replit | Bolt | Lovable | Vibecode | **NativeBot** |
+|--|--------|------|---------|----------|------------|
+| Open source | - | - | - | - | **Yes** |
+| Runs locally | - | - | - | - | **Yes** |
+| Your own machine | - | - | - | - | **Yes** |
+| No account needed | - | - | - | - | **Yes** |
+| Mobile-first (Expo) | - | - | - | Yes | **Yes** |
+| Chat from phone | - | - | - | - | **Yes** |
+| Free forever | - | - | - | - | **Yes** |
+
+**The difference:** Other tools build demos in their cloud. NativeBot builds real apps on your machine. You own the code. You own the project. You can open it in VS Code, Cursor, or Xcode. There's no vendor lock-in because there's no vendor.
+
+## Preview & Deploy — 30 sec read
 
 ```bash
-nativebot preview MyApp
-# Opens Expo dev server — scan QR code with Expo Go
+nativebot preview MyApp          # Scan QR with Expo Go
+nativebot export MyApp           # Step-by-step App Store guide
 ```
 
 Or manually:
 ```bash
-cd ~/.nativebot/projects/MyApp
-npx expo start
+cd ~/.nativebot/projects/MyApp/mobile
+npx expo start                   # Dev preview
+eas build --platform ios         # Production build
+eas submit --platform ios        # Ship to App Store
 ```
 
-## Deploy to App Store
+## Requirements — 15 sec read
+
+| Requirement | Notes |
+|------------|-------|
+| Python 3.10+ | `python3 --version` |
+| Node.js 18+ | For Expo projects |
+| Claude subscription | `claude login` — no API key needed |
+| Expo Go (mobile) | For live preview on phone |
+
+## Architecture — 30 sec read
+
+```
+You (terminal/Telegram)     NativeBot CLI          Claude Agent SDK
+┌─────────────────┐    ┌────────────────┐    ┌──────────────────┐
+│ "Add login page" │───▶│ Chat + Preview │───▶│ Claude AI         │
+│                  │◀───│ Self-heal      │◀───│ Reads/Writes code │
+└─────────────────┘    └────────────────┘    └──────────────────┘
+                              │
+                       ~/.nativebot/projects/
+                       ├── FitnessApp/
+                       │   ├── mobile/        ← Expo React Native
+                       │   ├── backend/       ← Supabase (optional)
+                       │   └── .nativebot/    ← Conversation history
+                       └── TodoApp/
+```
+
+- **Local-first** — projects are real directories on your filesystem
+- **No cloud** — Claude edits files directly, no database, no sync
+- **Session continuity** — conversations saved locally, pick up anytime
+- **Your code** — open in any editor, commit to any repo
+
+## Configuration — 15 sec read
 
 ```bash
-nativebot export MyApp
-# Shows step-by-step build & submit instructions
+export NATIVEBOT_PROJECTS_DIR=/custom/path    # Change project location
+nativebot open MyApp --model sonnet           # Use Sonnet 4.6 (faster)
 ```
 
-Or directly:
-```bash
-cd ~/.nativebot/projects/MyApp
-npm install -g eas-cli
-eas login
-eas build --platform ios
-eas submit --platform ios
-```
-
-## Requirements
-
-| Requirement | Required? | Notes |
-|------------|-----------|-------|
-| Python 3.10+ | Yes | `python3 --version` |
-| Node.js 18+ | Yes | For Expo projects |
-| Claude subscription | Recommended | Just run `claude login` — no API key needed |
-| Anthropic API Key | Alternative | [Get one](https://console.anthropic.com) if you prefer API access |
-| Expo Go (mobile) | Recommended | For live preview on phone |
-| Apple Developer Account | For shipping | For App Store submission |
-
-## Architecture
-
-```
-You (terminal)          NativeBot CLI            Claude Agent SDK
-┌──────────────┐    ┌────────────────┐    ┌──────────────────┐
-│ nativebot open   │───▶│ Project Manager │───▶│ Claude AI         │
-│ "Add login"   │◀───│ Chat Session    │◀───│ Reads/Writes code │
-└──────────────┘    └────────────────┘    └──────────────────┘
-                           │
-                    ~/.nativebot/projects/
-                    ├── FitnessApp/
-                    │   ├── app/
-                    │   ├── package.json
-                    │   └── .nativebot/conversation.json
-                    └── TodoApp/
-```
-
-- Projects are real directories on your filesystem
-- Claude edits files directly — no database, no cloud sync
-- Conversations saved locally for session continuity
-- Your code, your machine, your control
-
-## Why NativeBot?
-
-| | Replit | Bolt | Lovable | Vibecode | **NativeBot** |
-|--|--------|------|---------|----------|------------|
-| Open source | ❌ | ❌ | ❌ | ❌ | ✅ |
-| CLI / Terminal | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Self-hosted | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Your own API key | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Mobile-first (Expo) | ❌ | ❌ | ❌ | ✅ | ✅ |
-| No account required | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Unlimited usage | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Free forever | ❌ | ❌ | ❌ | ❌ | ✅ |
-
-## Project Structure
-
-```
-nativebot/
-├── src/nativebot/
-│   ├── cli.py          # Click commands
-│   ├── chat.py         # Interactive chat with Claude
-│   ├── projects.py     # Project management (filesystem)
-│   ├── agent.py        # Claude Agent SDK integration
-│   ├── constants.py    # Models, tools, system rules
-│   └── display.py      # Rich terminal formatting
-├── template/           # Expo seed template
-├── pyproject.toml      # Package config
-├── README.md
-├── VISION.md
-└── LICENSE
-```
-
-## Configuration
-
-Projects are stored in `~/.nativebot/projects/`. To change:
-
-```bash
-export NATIVEBOT_PROJECTS_DIR=/path/to/projects
-```
-
-Default model is Claude Opus 4.6. To change:
-
-```bash
-nativebot open MyApp --model sonnet  # Use Sonnet 4.6 (faster)
-```
+Default model is Claude Opus 4.6.
 
 ## Contributing
 
@@ -229,11 +186,10 @@ PRs welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. Free forever. Go build something.
 
 ---
 
 <div align="center">
-  Built with ❤️ by the NativeBot community<br>
-  Powered by <a href="https://anthropic.com">Claude</a> · <a href="https://expo.dev">Expo</a>
+  Powered by <a href="https://anthropic.com">Claude</a> and <a href="https://expo.dev">Expo</a>
 </div>
