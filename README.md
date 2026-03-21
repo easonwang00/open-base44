@@ -14,9 +14,7 @@ Describe your app → Claude builds it → Preview on your phone → Submit to A
 
 </div>
 
-<div align="center">
-  <video src="https://github.com/user-attachments/assets/59f0cdcc-6271-4b69-b7d7-2760719119fb" width="600" controls></video>
-</div>
+[![Watch the demo](https://img.shields.io/badge/▶_Watch_Demo-black?style=for-the-badge&logo=youtube&logoColor=white)](https://github.com/user-attachments/assets/59f0cdcc-6271-4b69-b7d7-2760719119fb)
 
 ---
 
