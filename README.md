@@ -16,8 +16,6 @@ No cloud. No account. No limits. Your code stays on your machine.
 
 </div>
 
-https://github.com/user-attachments/assets/bc99413e-586e-456d-883e-7d5fdced799b
-
 ---
 
 Most AI app builders give you throwaway demos. NativeBot gives you **real, shippable mobile apps** — built with Expo React Native, running on your phone, ready for the App Store. Not mockups. Not prototypes. Production code.
@@ -26,7 +24,7 @@ It's your **personal app developer** that lives in your terminal. It doesn't pho
 
 ---
 
-## Quick Start — 30 seconds
+## Quick Start — 10 seconds
 
 ```bash
 pipx install nativebot   # or: pip install nativebot
@@ -38,43 +36,11 @@ Three commands. No API key setup. Uses your Claude subscription. Start building.
 
 ---
 
-## See It Work — 1 min read
+## See It Work
 
-```
-$ nativebot
+https://github.com/user-attachments/assets/bc99413e-586e-456d-883e-7d5fdced799b
 
-  ? What would you like to do? Create new project
-  ? App name: FitnessApp
-  ? Start building now? Yes
-
-  You: Build a fitness tracker with workout logging and progress charts
-
-  🤖 Claude is working... 32s
-  ├─ Writing src/app/index.tsx
-  ├─ Writing src/app/workouts.tsx
-  ├─ Writing src/components/ExerciseCard.tsx
-  ├─ Writing src/components/ProgressChart.tsx
-  └─ npm install
-
-  ✅ Done! 8 files changed (5 turns, saved $0.23)
-
-  You: Add a dark mode toggle to settings
-
-  🤖 Claude is working... 18s
-  ├─ Writing src/app/settings.tsx
-  ├─ Edit src/app/_layout.tsx
-  └─ npm install
-
-  ✅ Done! 3 files changed (3 turns, saved $0.12)
-
-  You: preview
-  Preview is already running!
-  Expo hot-reloads automatically when code changes. Check your phone.
-```
-
-That's a working app on your phone in under 2 minutes.
-
-## Commands — 30 sec read
+## Commands — 10 sec read
 
 ```bash
 nativebot                  # Interactive mode (recommended)
@@ -88,7 +54,7 @@ nativebot telegram         # Start Telegram bot interface
 nativebot delete MyApp     # Delete a project
 ```
 
-## Chat From Your Phone — 1 min read
+## Chat From Your Phone — 15 sec read
 
 NativeBot includes a self-hosted Telegram bot. Create your own private bot, run it on your machine. Build apps from your phone while you're on the couch.
 
@@ -103,7 +69,7 @@ Send photos of UI designs. Claude sees them. `/preview` gives you the Expo URL r
 
 Same projects, same `~/.nativebot/projects/` directory. CLI and Telegram work interchangeably.
 
-## How It Works — 30 sec read
+## How It Works — 10 sec read
 
 1. **Create** — Seeds a production-ready Expo React Native template
 2. **Chat** — Describe features in plain English, Claude writes the code
@@ -111,7 +77,7 @@ Same projects, same `~/.nativebot/projects/` directory. CLI and Telegram work in
 4. **Preview** — Scan QR with Expo Go on your phone, hot-reloads on every change
 5. **Ship** — Build with EAS and submit to App Store / Google Play
 
-## Why NativeBot? — 30 sec read
+## Why NativeBot? — 15 sec read
 
 | | Replit | Bolt | Lovable | Vibecode | **NativeBot** |
 |--|--------|------|---------|----------|------------|
@@ -125,7 +91,7 @@ Same projects, same `~/.nativebot/projects/` directory. CLI and Telegram work in
 
 **The difference:** Other tools build demos in their cloud. NativeBot builds real apps on your machine. You own the code. You own the project. You can open it in VS Code, Cursor, or Xcode. There's no vendor lock-in because there's no vendor.
 
-## Preview & Deploy — 30 sec read
+## Preview & Deploy — 10 sec read
 
 ```bash
 nativebot preview MyApp          # Scan QR with Expo Go
@@ -140,7 +106,7 @@ eas build --platform ios         # Production build
 eas submit --platform ios        # Ship to App Store
 ```
 
-## Requirements — 15 sec read
+## Requirements — 10 sec read
 
 | Requirement | Notes |
 |------------|-------|
@@ -149,7 +115,7 @@ eas submit --platform ios        # Ship to App Store
 | Claude subscription | `claude login` — no API key needed |
 | Expo Go (mobile) | For live preview on phone |
 
-## Architecture — 30 sec read
+## Architecture — 15 sec read
 
 ```
 You (terminal/Telegram)     NativeBot CLI          Claude Agent SDK
@@ -171,7 +137,7 @@ You (terminal/Telegram)     NativeBot CLI          Claude Agent SDK
 - **Session continuity** — conversations saved locally, pick up anytime
 - **Your code** — open in any editor, commit to any repo
 
-## Configuration — 15 sec read
+## Configuration — 10 sec read
 
 ```bash
 export NATIVEBOT_PROJECTS_DIR=/custom/path    # Change project location
