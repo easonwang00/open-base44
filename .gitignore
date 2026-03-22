@@ -27,3 +27,10 @@ projects/
 
 # Website (deployed separately)
 website/
+
+# Template internals (bundled in package, not needed on GitHub)
+template/expo-app/backend/
+template/expo-app/CLAUDE.md
+template/expo-app/mobile/CLAUDE.md
+template/expo-app/mobile/AGENTS.md
+template/expo-app/.claude/
