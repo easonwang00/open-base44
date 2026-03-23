@@ -38,7 +38,9 @@ Three commands. No API key setup. Uses your Claude subscription. Start building.
 
 ## See It Work
 
-https://github.com/user-attachments/assets/bc99413e-586e-456d-883e-7d5fdced799b
+<div align="center">
+<img src="assets/demo.gif" alt="Open-Base44 Demo" width="700" />
+</div>
 
 ## Commands — 10 sec read
 
