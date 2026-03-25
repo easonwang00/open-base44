@@ -10,7 +10,7 @@ Describe what you want → Claude writes the code → Preview on your phone → 
 
 No cloud. No account. No limits. Your code stays on your machine.
 
-If NativeBot helps you build something, [please star this repo](https://github.com/easonwang00/NativeBot) — it helps others find it.
+If NativeBot helps you build something, please star this repo — it helps others find it.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/nativebot)](https://pypi.org/project/nativebot)
@@ -162,7 +162,7 @@ MIT. Free forever. Go build something.
 
 <div align="center">
 
-**If NativeBot helped you build something, give it a [star on GitHub](https://github.com/easonwang00/NativeBot) and share it with a friend. It means a lot.**
+**If NativeBot helped you build something, give it a star and share it with a friend. It means a lot.**
 
 Powered by <a href="https://anthropic.com">Claude</a> and <a href="https://expo.dev">Expo</a>
 
